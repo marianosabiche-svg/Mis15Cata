@@ -336,13 +336,45 @@
     z-index:10;
   }
 
+/* Recuadro para el nombre con fondo gris oscuro y letras blancas */
+  .modal-name-box {
+    background-color: #AEC6CF; /* Gris oscuro */
+    color: #FFFFFF;           /* Letras blancas */
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 5px 5px;
+    border-radius: 6px;
+    margin: 0 auto 10px auto;
+    display: inline-block;
+    max-width: 100%;
+    width: 70%;
+  }
+
+  /* Reducción del espaciado entre los renglones de Santander y Alias */
+  .bank-details {
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    color: var(--deep);
+    line-height: 1.25; /* Renglones más juntos */
+    margin-bottom: 16px;
+  }
+  
+  /* Cambia el color del nombre del banco */
+  .bank-details .bank-name {
+    color: #AEC6CF;
+  }
+
+  .bank-details div {
+    margin-bottom: 4px; /* Pequeña separación entre la línea del banco y el alias */
+  }
   .modal-title{
     font-family:'Mrs Saint Delafield', cursive;
     font-size:50px;
     color:var(--deep);
     margin-bottom:18px;
-    font-weight:700;
-    -webkit-text-stroke: 0.8px var(--deep);
+    font-weight:300;
+    -webkit-text-stroke: 0px var(--deep);
   }
   .modal-info{
     font-family:'Arial', cursive;
@@ -350,7 +382,15 @@
     color:var(--deep);
     line-height:1.65;
     margin-bottom:24px;
-    font-weight:700;
+    font-weight:300;
+  }
+  .modal-bank{
+    font-family:'Arial', cursive;
+    font-size:15px;
+    color:var(--deep);
+    line-height:1.65;
+    margin-bottom:24px;
+    font-weight:300;
   }
   .modal-info strong{
     color:var(--deep);
@@ -361,8 +401,8 @@
     font-size:40px;
     color:var(--deep);
     margin-top:10px;
-    font-weight:700;
-    -webkit-text-stroke: 0.6px var(--deep);
+    font-weight:300;
+    -webkit-text-stroke: 0px var(--deep);
   }
   .modal-signature{
     font-family:'Mrs Saint Delafield', cursive;
@@ -370,8 +410,8 @@
     color:var(--deep);
     line-height:0.9;
     margin-top:-2px;
-    font-weight:700;
-    -webkit-text-stroke: 1px var(--deep);
+    font-weight:300;
+    -webkit-text-stroke: 0px var(--deep);
   }
 
   /* ESTILOS DEL FORMULARIO RSVP */
@@ -616,7 +656,7 @@
     <button class="btn" id="open-modal">Ver Datos</button>
   </section>
 
-  <!-- VENTANA EMERGENTE (MODAL CUENTA BANCARIA) -->
+<!-- VENTANA EMERGENTE (MODAL CUENTA BANCARIA) -->
   <div class="modal-overlay" id="modal-cuenta" aria-hidden="true">
     <div class="modal-card">
       <button class="modal-close-btn" id="close-modal" aria-label="Cerrar ventana">&times;</button>
@@ -624,10 +664,18 @@
         <img src="flor-cuenta.png" alt="" aria-hidden="true">
       </div>
       <div class="modal-title">Cuenta Bancaria</div>
-      <div class="modal-info">
-        <strong>Alias:</strong> Cata.mis15.mp<br>
-        <strong>Nombre:</strong> Analía Patricia Silvestro
+      
+      <!-- Bloque del nombre con fondo gris oscuro -->
+      <div class="modal-name-box">
+        Analía Patricia Silvestro
       </div>
+
+      <!-- Bloque de datos bancarios juntos -->
+      <div class="bank-details">
+        <div class="bank-name"><strong>SANTANDER RIO</strong></div>
+        <div><strong>Alias: Cata.mis15.mp</strong></div>
+      </div>
+
       <div class="modal-thanks">¡Muchas Gracias!</div>
       <div class="modal-signature">Cata</div>
     </div>
