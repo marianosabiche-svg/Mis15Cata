@@ -653,7 +653,7 @@
     <button class="btn" id="open-rsvp-modal">Confirmar Asistencia</button>
   </section>
 
-  <!-- VENTANA EMERGENTE (MODAL FORMULARIO ASISTENCIA VIA WEB3FORMS) -->
+  <!-- VENTANA EMERGENTE (MODAL FORMULARIO ASISTENCIA VIA GOOGLE FORMS) -->
   <div class="modal-overlay" id="modal-rsvp" aria-hidden="true">
     <div class="modal-form-card">
       <button class="modal-close-btn" id="close-rsvp-modal" aria-label="Cerrar ventana">&times;</button>
@@ -665,12 +665,8 @@
         </div>
       </div>
 
-      <!-- Formulario para Web3Forms -->
-      <form action="https://api.web3forms.com/submit" method="POST">
-        <!-- Poner aquí tu clave provista por Web3Forms -->
-        <input type="hidden" name="access_key" value="3c5d8b87-d19d-4ac2-93fe-3659562ebe05">
-        <input type="hidden" name="subject" value="Nueva Confirmación RSVP - XV Cata">
-
+      <!-- Formulario adaptado -->
+      <form id="rsvpForm">
         <!-- Nombre -->
         <div class="form-group">
           <label class="field-label">Nombre y Apellido*</label>
@@ -681,10 +677,10 @@
         <div class="form-group">
           <label class="field-label">¿Asistís al evento?*</label>
           <label class="radio-option">
-            <input type="radio" name="asistencia" value="Si, confirmo" required> Si, confirmo.
+            <input type="radio" name="asistencia" value="Si, confirmo." required> Si, confirmo.
           </label>
           <label class="radio-option">
-            <input type="radio" name="asistencia" value="No podre asistir"> No podré asistir.
+            <input type="radio" name="asistencia" value="No podré asistir."> No podré asistir.
           </label>
         </div>
 
@@ -701,7 +697,7 @@
             <input type="radio" name="restriccion" value="Ninguna" checked> Ninguna
           </label>
           <label class="radio-option">
-            <input type="radio" name="restriccion" value="Celiaco"> Celíaco
+            <input type="radio" name="restriccion" value="Celíaco"> Celíaco
           </label>
           <label class="radio-option">
             <input type="radio" name="restriccion" value="Vegano"> Vegano
@@ -802,49 +798,46 @@
     }
   });
 
-// Manejo del formulario RSVP vía AJAX
-  var rsvpForm = document.querySelector('#modal-rsvp form');
-  var submitBtn = rsvpForm.querySelector('.btn-submit');
+  // Manejo del formulario RSVP enviado hacia Google Forms
+  var rsvpForm = document.getElementById('rsvpForm');
 
-  rsvpForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    // Cambiamos el texto del botón mientras se procesa
-    var originalBtnText = submitBtn.textContent;
-    submitBtn.textContent = 'Enviando...';
-    submitBtn.disabled = true;
+  if (rsvpForm) {
+    rsvpForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      var submitBtn = rsvpForm.querySelector('.btn-submit');
+      var originalBtnText = submitBtn.textContent;
+      submitBtn.textContent = 'Enviando...';
+      submitBtn.disabled = true;
 
-    const formData = new FormData(rsvpForm);
-    const object = Object.fromEntries(formData);
-    const json = JSON.stringify(object);
+      // Endpoint directo de Google Forms
+      var googleFormsUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdYO_gRIKYspO-ngtSE0BuZwTZx76li039kTm12zmBOh9b2tg/formResponse';
 
-    try {
-      const response = await fetch('https://api.web3forms.com/submit', {
+      var formData = new FormData();
+      formData.append('entry.2086794907', rsvpForm.querySelector('[name="nombre"]').value);
+      formData.append('entry.1874505093', rsvpForm.querySelector('[name="asistencia"]:checked')?.value || '');
+      formData.append('entry.1689596133', rsvpForm.querySelector('[name="email"]').value);
+      formData.append('entry.685473309', rsvpForm.querySelector('[name="restriccion"]:checked')?.value || '');
+      formData.append('entry.900722887', rsvpForm.querySelector('[name="comentarios"]').value);
+
+      // Petición silenciosa
+      fetch(googleFormsUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: json
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
+        mode: 'no-cors',
+        body: formData
+      }).then(function() {
         alert('¡Muchas gracias! Tu confirmación ha sido recibida con éxito.');
         rsvpForm.reset();
         modalRsvp.classList.remove('active');
         modalRsvp.setAttribute('aria-hidden', 'true');
-      } else {
-        alert('Hubo un problema al enviar tu respuesta. Por favor, intentá de nuevo.');
-      }
-    } catch (error) {
-      alert('Ocurrió un error de conexión. Por favor, verificá tu internet e intentá nuevamente.');
-    } finally {
-      submitBtn.textContent = originalBtnText;
-      submitBtn.disabled = false;
-    }
-  });
+      }).catch(function() {
+        alert('Ocurrió un error al enviar la respuesta. Por favor, intentá de nuevo.');
+      }).finally(function() {
+        submitBtn.textContent = originalBtnText;
+        submitBtn.disabled = false;
+      });
+    });
+  }
 </script>
 </body>
 </html>
