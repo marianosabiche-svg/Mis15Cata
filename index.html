@@ -665,46 +665,46 @@
         </div>
       </div>
 
-      <!-- Formulario adaptado -->
-      <form id="rsvpForm">
+      <!-- Formulario adaptado para Google Forms -->
+      <form id="rsvpForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdYO_gRIKYspO-ngtSE0BuZwTZx76li039kTm12zmBOh9b2tg/formResponse" method="POST" target="hidden_iframe">
         <!-- Nombre -->
         <div class="form-group">
           <label class="field-label">Nombre y Apellido*</label>
-          <input type="text" name="nombre" class="form-control" placeholder="Escribe tu nombre completo" required>
+          <input type="text" name="entry.2086794907" class="form-control" placeholder="Escribe tu nombre completo" required>
         </div>
 
         <!-- Asistencia -->
         <div class="form-group">
           <label class="field-label">¿Asistís al evento?*</label>
           <label class="radio-option">
-            <input type="radio" name="asistencia" value="Si, confirmo." required> Si, confirmo.
+            <input type="radio" name="entry.1874505093" value="Si, confirmo." required> Si, confirmo.
           </label>
           <label class="radio-option">
-            <input type="radio" name="asistencia" value="No podré asistir."> No podré asistir.
+            <input type="radio" name="entry.1874505093" value="No podré asistir."> No podré asistir.
           </label>
         </div>
 
         <!-- Email -->
         <div class="form-group">
           <label class="field-label">Correo electrónico</label>
-          <input type="email" name="email" class="form-control" placeholder="tu@email.com">
+          <input type="email" name="entry.1689596133" class="form-control" placeholder="tu@email.com">
         </div>
 
         <!-- Restricción Alimenticia -->
         <div class="form-group">
           <label class="field-label">¿Tenés alguna restricción alimenticia?*</label>
           <label class="radio-option">
-            <input type="radio" name="restriccion" value="Ninguna" checked> Ninguna
+            <input type="radio" name="entry.685473309" value="Ninguna" checked> Ninguna
           </label>
           <label class="radio-option">
-            <input type="radio" name="restriccion" value="Vegano"> Vegano
+            <input type="radio" name="entry.685473309" value="Vegano"> Vegano
           </label>
         </div>
 
         <!-- Comentarios -->
         <div class="form-group">
           <label class="field-label">Comentarios adicionales</label>
-          <textarea name="comentarios" class="form-control" rows="3" placeholder="¿Algo más que quieras decirnos?"></textarea>
+          <textarea name="entry.900722887" class="form-control" rows="3" placeholder="¿Algo más que quieras decirnos?"></textarea>
         </div>
 
         <button type="submit" class="btn-submit">Enviar</button>
@@ -789,44 +789,36 @@
     }
   });
 
-  // Manejo del formulario RSVP enviado hacia Google Forms
+  // Manejo del formulario RSVP enviado hacia Google Forms a través de un iframe oculto
   var rsvpForm = document.getElementById('rsvpForm');
 
   if (rsvpForm) {
-    rsvpForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      var submitBtn = rsvpForm.querySelector('.btn-submit');
-      var originalBtnText = submitBtn.textContent;
-      submitBtn.textContent = 'Enviando...';
-      submitBtn.disabled = true;
+    var hiddenIframe = document.createElement('iframe');
+    hiddenIframe.name = 'hidden_iframe';
+    hiddenIframe.id = 'hidden_iframe';
+    hiddenIframe.style.display = 'none';
+    document.body.appendChild(hiddenIframe);
 
-      // Endpoint directo de Google Forms
-      var googleFormsUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdYO_gRIKYspO-ngtSE0BuZwTZx76li039kTm12zmBOh9b2tg/formResponse';
+    var submitted = false;
 
-      var formData = new FormData();
-      formData.append('entry.2086794907', rsvpForm.querySelector('[name="nombre"]').value);
-      formData.append('entry.1874505093', rsvpForm.querySelector('[name="asistencia"]:checked')?.value || '');
-      formData.append('entry.1689596133', rsvpForm.querySelector('[name="email"]').value);
-      formData.append('entry.685473309', rsvpForm.querySelector('[name="restriccion"]:checked')?.value || '');
-      formData.append('entry.900722887', rsvpForm.querySelector('[name="comentarios"]').value);
-
-      // Petición silenciosa
-      fetch(googleFormsUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: formData
-      }).then(function() {
+    hiddenIframe.onload = function() {
+      if (submitted) {
         alert('¡Muchas gracias! Tu confirmación ha sido recibida con éxito.');
         rsvpForm.reset();
+        var submitBtn = rsvpForm.querySelector('.btn-submit');
+        submitBtn.textContent = 'Enviar';
+        submitBtn.disabled = false;
         modalRsvp.classList.remove('active');
         modalRsvp.setAttribute('aria-hidden', 'true');
-      }).catch(function() {
-        alert('Ocurrió un error al enviar la respuesta. Por favor, intentá de nuevo.');
-      }).finally(function() {
-        submitBtn.textContent = originalBtnText;
-        submitBtn.disabled = false;
-      });
+        submitted = false;
+      }
+    };
+
+    rsvpForm.addEventListener('submit', function() {
+      var submitBtn = rsvpForm.querySelector('.btn-submit');
+      submitBtn.textContent = 'Enviando...';
+      submitBtn.disabled = true;
+      submitted = true;
     });
   }
 </script>
