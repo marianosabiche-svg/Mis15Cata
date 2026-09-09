@@ -843,58 +843,33 @@
     }
   });
 
-  // Envío a Google Forms en segundo plano + WhatsApp
+  // Manejo del formulario RSVP enviado por WhatsApp
   var rsvpForm = document.getElementById('rsvpForm');
 
   if (rsvpForm) {
     rsvpForm.addEventListener('submit', function(e) {
       e.preventDefault();
 
-      // 1. Recopilar datos
-      var fullname = rsvpForm.querySelector('input[name="entry.2086794907"]').value;
-      
-      var attendanceOption = rsvpForm.querySelector('input[name="entry.1874505093"]:checked');
+      var phone = "5491154644529";
+      var fullname = document.getElementById('rsvp-fullname').value;
+
+      var attendanceOption = document.querySelector('input[name="attendance"]:checked');
       var attendance = attendanceOption ? attendanceOption.value : '';
 
-      var email = rsvpForm.querySelector('input[name="entry.1689596133"]').value;
-
-      var dietaryOption = rsvpForm.querySelector('input[name="entry.685473309"]:checked');
+      var dietaryOption = document.querySelector('input[name="dietary"]:checked');
       var dietary = dietaryOption ? dietaryOption.value : '';
 
-      var comments = rsvpForm.querySelector('textarea[name="entry.900722887"]').value;
-
-      // 2. Preparar datos para Google Forms
-      var googleUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdYO_gRIKYspO-ngtSE0BuZwTZx76li039kTm12zmBOh9b2tg/formResponse";
-      var formData = new FormData();
-      formData.append("entry.2086794907", fullname);
-      formData.append("entry.1874505093", attendance);
-      formData.append("entry.1689596133", email);
-      formData.append("entry.685473309", dietary);
-      formData.append("entry.900722887", comments);
-
-      // 3. Enviar a Google Forms en segundo plano
-      fetch(googleUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: formData
-      });
-
-      // 4. Abrir WhatsApp
-      var phone = "5491154644529";
       var text = "¡Hola! Quiero confirmar mi asistencia a los XV de Cata:\n\n";
       text += "👤 *Nombre y Apellido:* " + fullname + "\n";
       text += "✉️ *Asistencia:* " + attendance + "\n";
-      if (email) text += "📧 *Email:* " + email + "\n";
       text += "🥗 *Restricción Alimenticia:* " + dietary + "\n";
-      if (comments) text += "💬 *Comentarios:* " + comments + "\n";
 
       var encodedText = encodeURIComponent(text);
       var whatsappUrl = "https://wa.me/" + phone + "?text=" + encodedText;
 
       window.open(whatsappUrl, '_blank');
 
-      // 5. Limpiar y cerrar modal
-      rsvpForm.reset();
+      // Cierra el modal tras redirigir
       modalRsvp.classList.remove('active');
       modalRsvp.setAttribute('aria-hidden', 'true');
     });
