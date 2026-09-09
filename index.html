@@ -843,19 +843,14 @@
     }
   });
 
-  // Manejo del doble envío (Google Forms + WhatsApp)
+  // Envío a Google Forms en segundo plano + WhatsApp
   var rsvpForm = document.getElementById('rsvpForm');
 
   if (rsvpForm) {
-    // Iframe transparente para recibir la respuesta de Google Forms
-    var hiddenIframe = document.createElement('iframe');
-    hiddenIframe.name = 'hidden_iframe';
-    hiddenIframe.id = 'hidden_iframe';
-    hiddenIframe.style.display = 'none';
-    document.body.appendChild(hiddenIframe);
+    rsvpForm.addEventListener('submit', function(e) {
+      e.preventDefault();
 
-    rsvpForm.addEventListener('submit', function() {
-      // 1. Capturar datos ingresados
+      // 1. Recopilar datos
       var fullname = rsvpForm.querySelector('input[name="entry.2086794907"]').value;
       
       var attendanceOption = rsvpForm.querySelector('input[name="entry.1874505093"]:checked');
@@ -868,7 +863,23 @@
 
       var comments = rsvpForm.querySelector('textarea[name="entry.900722887"]').value;
 
-      // 2. Construir mensaje para WhatsApp
+      // 2. Preparar datos para Google Forms
+      var googleUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdYO_gRIKYspO-ngtSE0BuZwTZx76li039kTm12zmBOh9b2tg/formResponse";
+      var formData = new FormData();
+      formData.append("entry.2086794907", fullname);
+      formData.append("entry.1874505093", attendance);
+      formData.append("entry.1689596133", email);
+      formData.append("entry.685473309", dietary);
+      formData.append("entry.900722887", comments);
+
+      // 3. Enviar a Google Forms en segundo plano
+      fetch(googleUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      });
+
+      // 4. Abrir WhatsApp
       var phone = "5491154644529";
       var text = "¡Hola! Quiero confirmar mi asistencia a los XV de Cata:\n\n";
       text += "👤 *Nombre y Apellido:* " + fullname + "\n";
@@ -880,13 +891,12 @@
       var encodedText = encodeURIComponent(text);
       var whatsappUrl = "https://wa.me/" + phone + "?text=" + encodedText;
 
-      // 3. Abrir WhatsApp tras dar un pequeño tiempo al navegador para enviar el formulario a Google
-      setTimeout(function() {
-        window.open(whatsappUrl, '_blank');
-        rsvpForm.reset();
-        modalRsvp.classList.remove('active');
-        modalRsvp.setAttribute('aria-hidden', 'true');
-      }, 300);
+      window.open(whatsappUrl, '_blank');
+
+      // 5. Limpiar y cerrar modal
+      rsvpForm.reset();
+      modalRsvp.classList.remove('active');
+      modalRsvp.setAttribute('aria-hidden', 'true');
     });
   }
 </script>
