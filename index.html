@@ -368,6 +368,19 @@
   .bank-details div {
     margin-bottom: 4px; /* Pequeña separación entre la línea del banco y el alias */
   }
+
+.parpadeo-negrita {
+    font-weight: bold; /* Aplica la negrita */
+    animation: parpadeo 1s infinite; /* Ejecuta la animación cada 1 segundo infinitamente */
+  }
+
+  /* Define los pasos de la animación */
+  @keyframes parpadeo {
+    0% { opacity: 1; }    /* Totalmente visible */
+    50% { opacity: 0; }   /* Totalmente invisible */
+    100% { opacity: 1; }  /* Vuelve a ser visible */
+  }
+
   .modal-title{
     font-family:'Mrs Saint Delafield', cursive;
     font-size:50px;
@@ -634,7 +647,7 @@
     <div class="detalle">
       Los esperamos para compartir<br>
       la recepción a las 20:30 hs<br> 
-      <b>(Puntual)</b><br>
+      <span class="parpadeo-negrita">(Puntual)</span><br>
       Horario: 20:30hs a 02:30hs<br>
       Calle 146 nro. 772 – Berazategui<br>
       Prov. de Bs. As.
