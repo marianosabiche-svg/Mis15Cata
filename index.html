@@ -843,10 +843,49 @@
     }
   });
 
-  // Manejo del formulario RSVP enviado por WhatsApp
+  // Manejo del formulario RSVP: guarda la respuesta en Google Forms
+  // (de forma silenciosa, vía iframe oculto) y luego redirige a WhatsApp.
   var rsvpForm = document.getElementById('rsvpForm');
 
   if (rsvpForm) {
+
+    // Iframe oculto que recibe la respuesta del envío a Google Forms
+    // sin recargar ni navegar la página.
+    var hiddenIframe = document.createElement('iframe');
+    hiddenIframe.name = 'hidden_iframe';
+    hiddenIframe.id = 'hidden_iframe';
+    hiddenIframe.style.display = 'none';
+    document.body.appendChild(hiddenIframe);
+
+    // Envía los datos al Google Form de forma transparente para el usuario.
+    function enviarAGoogleForms(fullname, attendance, dietary){
+      var googleFormAction = "https://docs.google.com/forms/d/e/1FAIpQLSdYO_gRIKYspO-ngtSE0BuZwTZx76li039kTm12zmBOh9b2tg/formResponse";
+
+      var tempForm = document.createElement('form');
+      tempForm.action = googleFormAction;
+      tempForm.method = "POST";
+      tempForm.target = "hidden_iframe";
+      tempForm.style.display = "none";
+
+      var campos = {
+        "entry.2086794907": fullname,   // Nombre y Apellido
+        "entry.1874505093": attendance, // ¿Asistís al evento?
+        "entry.685473309": dietary      // Restricción Alimenticia
+      };
+
+      for (var name in campos) {
+        var input = document.createElement('input');
+        input.type = "hidden";
+        input.name = name;
+        input.value = campos[name];
+        tempForm.appendChild(input);
+      }
+
+      document.body.appendChild(tempForm);
+      tempForm.submit();
+      document.body.removeChild(tempForm);
+    }
+
     rsvpForm.addEventListener('submit', function(e) {
       e.preventDefault();
 
@@ -859,6 +898,10 @@
       var dietaryOption = document.querySelector('input[name="dietary"]:checked');
       var dietary = dietaryOption ? dietaryOption.value : '';
 
+      // 1) Guarda la confirmación en Google Forms (silencioso, en segundo plano)
+      enviarAGoogleForms(fullname, attendance, dietary);
+
+      // 2) Arma y abre el mensaje de WhatsApp
       var text = "¡Hola! Quiero confirmar mi asistencia a los XV de Cata:\n\n";
       text += "👤 *Nombre y Apellido:* " + fullname + "\n";
       text += "✉️ *Asistencia:* " + attendance + "\n";
