@@ -336,7 +336,7 @@
     z-index:10;
   }
 
-/* Recuadro para el nombre con fondo gris oscuro y letras blancas */
+  /* Recuadro para el nombre con fondo gris oscuro y letras blancas */
   .modal-name-box {
     background-color: #AEC6CF; /* Gris oscuro */
     color: #FFFFFF;           /* Letras blancas */
@@ -484,26 +484,31 @@
   }
 
   .radio-option input {
-    accent-color: #0088CC;
+    accent-color: #25D366;
     width: 18px;
     height: 18px;
   }
 
-  .btn-submit {
+  .btn-submit-whatsapp {
     width: 100%;
-    background: #0088CC;
+    background: #25D366;
     color: #FFF;
     border: none;
-    padding: 12px;
-    border-radius: 20px;
+    padding: 12px 20px;
+    border-radius: 25px;
     font-size: 17px;
     font-weight: 700;
     cursor: pointer;
     margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.25s ease;
   }
 
-  .btn-submit:hover {
-    background: #006699;
+  .btn-submit-whatsapp:hover {
+    background: #1EBE5D;
   }
 
   /* DRESS CODE */
@@ -570,9 +575,9 @@
     padding:56px 32px 48px;
   }
   footer svg{width:72px;height:72px;margin:0 auto 16px;display:block;}
-  footer .despedida{font-size:23px;letter-spacing:.05em;color:#CFE1E9;font-weight:500;}
-  footer .script{color:#fff;font-size:58px;margin-top:8px;-webkit-text-stroke:0px;}
-  footer .hearts{color:var(--gold);margin-top:12px;font-size:18px;}
+  footer .despedida{font-size:23px;letter-spacing:.05em;color:#CFE1E9;font-weight:500;text-align: center;}
+  footer .script{color:#fff;font-size:58px;margin-top:8px;-webkit-text-stroke:0px;text-align: center;}
+  footer .hearts{color:var(--gold);margin-top:12px;font-size:18px;text-align: center;}
 
   @media (min-width:600px){
     .hero-name{font-size:130px;}
@@ -589,12 +594,12 @@
 <div class="page">
   <!-- HERO -->
   <section class="hero">
-    <img class="top-bloom" src="ramo.png" alt="" aria-hidden="true">
+    <img class="top-bloom" src="https://tusinvitados.ar/Mis15Cata/ramo.png" alt="" aria-hidden="true">
     <div class="hero-title">
       <div class="eyebrow roman">MIS XV</div>
       <div class="hero-name script">Cata</div>
     </div>
-    <img class="bottom-bloom" src="ramo.png" alt="" aria-hidden="true">
+    <img class="bottom-bloom" src="https://tusinvitados.ar/Mis15Cata/ramo.png" alt="" aria-hidden="true">
   </section>
 
   <!-- FECHA -->
@@ -619,12 +624,12 @@
 
   <!-- INVITACION -->
   <section class="invita">
-    <div class="side-wrap left"><img src="flor-lateral.png" alt="" aria-hidden="true"></div>
-    <div class="side-wrap right"><img src="flor-lateral-flip.png" alt="" aria-hidden="true"></div>
+    <div class="side-wrap left"><img src="https://tusinvitados.ar/Mis15Cata/flor-lateral.png" alt="" aria-hidden="true"></div>
+    <div class="side-wrap right"><img src="https://tusinvitados.ar/Mis15Cata/flor-lateral-flip.png" alt="" aria-hidden="true"></div>
     <h2>TE INVITO A CELEBRAR</h2>
     <div class="script">Mis Quince Años</div>
     <div class="organizer">
-      <img src="logo-puntosur.png" alt="Punto Sur Eventos">
+      <img src="https://tusinvitados.ar/Mis15Cata/logo-puntosur.png" alt="Punto Sur Eventos">
     </div>
     <div class="detalle">
       Horario: 20:30hs a 02:30hs<br>
@@ -661,7 +666,7 @@
     <div class="modal-card">
       <button class="modal-close-btn" id="close-modal" aria-label="Cerrar ventana">&times;</button>
       <div class="modal-bloom-container">
-        <img src="flor-cuenta.png" alt="" aria-hidden="true">
+        <img src="https://tusinvitados.ar/Mis15Cata/flor-cuenta.png" alt="" aria-hidden="true">
       </div>
       <div class="modal-title">Cuenta Bancaria</div>
       
@@ -701,7 +706,7 @@
     <button class="btn" id="open-rsvp-modal">Confirmar Asistencia</button>
   </section>
 
-  <!-- VENTANA EMERGENTE (MODAL FORMULARIO ASISTENCIA VIA GOOGLE FORMS) -->
+  <!-- VENTANA EMERGENTE (MODAL FORMULARIO ASISTENCIA VIA WHATSAPP) -->
   <div class="modal-overlay" id="modal-rsvp" aria-hidden="true">
     <div class="modal-form-card">
       <button class="modal-close-btn" id="close-rsvp-modal" aria-label="Cerrar ventana">&times;</button>
@@ -713,49 +718,54 @@
         </div>
       </div>
 
-      <!-- Formulario adaptado para Google Forms -->
-      <form id="rsvpForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdYO_gRIKYspO-ngtSE0BuZwTZx76li039kTm12zmBOh9b2tg/formResponse" method="POST" target="hidden_iframe">
+      <!-- Formulario configurado para envío por WhatsApp -->
+      <form id="rsvpForm">
         <!-- Nombre -->
         <div class="form-group">
           <label class="field-label">Nombre y Apellido*</label>
-          <input type="text" name="entry.2086794907" class="form-control" placeholder="Escribe tu nombre completo" required>
+          <input type="text" id="rsvp-fullname" class="form-control" placeholder="Escribe tu nombre completo" required>
         </div>
 
         <!-- Asistencia -->
         <div class="form-group">
           <label class="field-label">¿Asistís al evento?*</label>
           <label class="radio-option">
-            <input type="radio" name="entry.1874505093" value="Si, confirmo." required> Si, confirmo.
+            <input type="radio" name="attendance" value="Si, confirmo." required> Si, confirmo.
           </label>
           <label class="radio-option">
-            <input type="radio" name="entry.1874505093" value="No podré asistir."> No podré asistir.
+            <input type="radio" name="attendance" value="No podré asistir."> No podré asistir.
           </label>
         </div>
 
         <!-- Email -->
         <div class="form-group">
           <label class="field-label">Correo electrónico</label>
-          <input type="email" name="entry.1689596133" class="form-control" placeholder="tu@email.com">
+          <input type="email" id="rsvp-email" class="form-control" placeholder="tu@email.com">
         </div>
 
         <!-- Restricción Alimenticia -->
         <div class="form-group">
           <label class="field-label">¿Tenés alguna restricción alimenticia?*</label>
           <label class="radio-option">
-            <input type="radio" name="entry.685473309" value="Ninguna" checked> Ninguna
+            <input type="radio" name="dietary" value="Ninguna" checked> Ninguna
           </label>
           <label class="radio-option">
-            <input type="radio" name="entry.685473309" value="Vegano"> Vegano
+            <input type="radio" name="dietary" value="Vegano"> Vegano
           </label>
         </div>
 
         <!-- Comentarios -->
         <div class="form-group">
           <label class="field-label">Comentarios adicionales</label>
-          <textarea name="entry.900722887" class="form-control" rows="3" placeholder="¿Algo más que quieras decirnos?"></textarea>
+          <textarea id="rsvp-comments" class="form-control" rows="3" placeholder="¿Algo más que quieras decirnos?"></textarea>
         </div>
 
-        <button type="submit" class="btn-submit">Enviar</button>
+        <button type="submit" class="btn-submit-whatsapp">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.17-.478 1.338-.94.166-.462.166-.856.116-.94-.05-.083-.182-.133-.38-.232z"/>
+          </svg>
+          Enviar por Whatsapp
+        </button>
       </form>
     </div>
   </div>
@@ -837,36 +847,43 @@
     }
   });
 
-  // Manejo del formulario RSVP enviado hacia Google Forms a través de un iframe oculto
+  // Manejo del formulario RSVP enviado por WhatsApp
   var rsvpForm = document.getElementById('rsvpForm');
 
   if (rsvpForm) {
-    var hiddenIframe = document.createElement('iframe');
-    hiddenIframe.name = 'hidden_iframe';
-    hiddenIframe.id = 'hidden_iframe';
-    hiddenIframe.style.display = 'none';
-    document.body.appendChild(hiddenIframe);
+    rsvpForm.addEventListener('submit', function(e) {
+      e.preventDefault();
 
-    var submitted = false;
+      var phone = "5491154644529";
+      var fullname = document.getElementById('rsvp-fullname').value;
+      var email = document.getElementById('rsvp-email').value;
+      var comments = document.getElementById('rsvp-comments').value;
 
-    hiddenIframe.onload = function() {
-      if (submitted) {
-        alert('¡Muchas gracias! Tu confirmación ha sido recibida con éxito.');
-        rsvpForm.reset();
-        var submitBtn = rsvpForm.querySelector('.btn-submit');
-        submitBtn.textContent = 'Enviar';
-        submitBtn.disabled = false;
-        modalRsvp.classList.remove('active');
-        modalRsvp.setAttribute('aria-hidden', 'true');
-        submitted = false;
+      var attendanceOption = document.querySelector('input[name="attendance"]:checked');
+      var attendance = attendanceOption ? attendanceOption.value : '';
+
+      var dietaryOption = document.querySelector('input[name="dietary"]:checked');
+      var dietary = dietaryOption ? dietaryOption.value : '';
+
+      var text = "¡Hola! Quiero confirmar mi asistencia a los XV de Cata:\n\n";
+      text += "👤 *Nombre y Apellido:* " + fullname + "\n";
+      text += "✉️ *Asistencia:* " + attendance + "\n";
+      if (email) {
+        text += "📧 *Correo:* " + email + "\n";
       }
-    };
+      text += "🥗 *Restricción Alimenticia:* " + dietary + "\n";
+      if (comments) {
+        text += "💬 *Comentarios:* " + comments + "\n";
+      }
 
-    rsvpForm.addEventListener('submit', function() {
-      var submitBtn = rsvpForm.querySelector('.btn-submit');
-      submitBtn.textContent = 'Enviando...';
-      submitBtn.disabled = true;
-      submitted = true;
+      var encodedText = encodeURIComponent(text);
+      var whatsappUrl = "https://wa.me/" + phone + "?text=" + encodedText;
+
+      window.open(whatsappUrl, '_blank');
+
+      // Cierra el modal tras redirigir
+      modalRsvp.classList.remove('active');
+      modalRsvp.setAttribute('aria-hidden', 'true');
     });
   }
 </script>
