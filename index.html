@@ -632,8 +632,9 @@
       <img src="https://tusinvitados.ar/Mis15Cata/logo-puntosur.png" alt="Punto Sur Eventos">
     </div>
     <div class="detalle">
-      Tes esperamos para compartir la recepción<br> 
-      a las 20:30 hs <i>(Puntual)</i><br>
+      Tes esperamos para compartir<br>
+      la recepción a las 20:30 hs<br> 
+      <i>(Puntual)</i><br>
       Horario: 20:30hs a 02:30hs<br>
       Calle 146 nro. 772 – Berazategui<br>
       Prov. de Bs. As.
@@ -862,15 +863,8 @@
 
       var text = "¡Hola! Quiero confirmar mi asistencia a los XV de Cata:\n\n";
       text += "👤 *Nombre y Apellido:* " + fullname + "\n";
-      text += "✉️ *Asistencia:* " + attendance + "\n";
-      if (email) {
-        text += "📧 *Correo:* " + email + "\n";
-      }
+      text += "✉️ *Asistencia:* " + attendance + "\n";      
       text += "🥗 *Restricción Alimenticia:* " + dietary + "\n";
-      if (comments) {
-        text += "💬 *Comentarios:* " + comments + "\n";
-      }
-
       var encodedText = encodeURIComponent(text);
       var whatsappUrl = "https://wa.me/" + phone + "?text=" + encodedText;
 
